@@ -1,72 +1,119 @@
 import streamlit as st
 
-# Page Configuration
-st.set_page_config(page_title="Mechanical Unit Converter", layout="centered")
+# 1. Page Configuration - Wide layout for a dashboard feel
+st.set_page_config(
+    page_title="MECH-PRO Dashboard",
+    page_icon="🛠️",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# Header Section with Student Details
-st.title("⚙️ Mechanical Unit Converter & Material Density Checker")
-st.markdown("---")
-st.sidebar.header("Developer Information")
-st.sidebar.write("**Name:** Muhammad Abdullah Asad")
-st.sidebar.write("**Roll Number:** 25-ME-020")
+# Custom CSS for a Premium Look
+st.markdown("""
+    <style>
+    .main {
+        background-color: #0e1117;
+    }
+    .stMetric {
+        background-color: #1e2130;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #4a4e69;
+    }
+    div[data-testid="stExpander"] {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    </style>
+    """, unsafe_with_html_view=True)
 
-# Main Navigation
-option = st.selectbox("Choose a Tool", ["Unit Converter", "Material Density Checker"])
+# --- SIDEBAR: Developer Branding ---
+with st.sidebar:
+    st.image("https://cdn-icons-png.flaticon.com/512/1085/1085803.png", width=100)
+    st.title("MECH-PRO v2.0")
+    st.markdown("---")
+    st.subheader("👨‍💻 Developer Profile")
+    st.info(f"**Name:** Muhammad Bilal\n\n**Roll:** 25-ME-124")
+    st.markdown("---")
+    st.caption("UET Taxila | Mechanical Engineering")
 
-# --- TOOL 1: UNIT CONVERTER ---
-if option == "Unit Converter":
-    st.header("Unit Converter")
+# --- MAIN INTERFACE ---
+st.title("🛠️ Mechanical Engineering Smart Dashboard")
+st.write("An all-in-one utility for rapid material analysis and unit synchronization.")
+
+# Creating sleek Tabs for Navigation
+tab1, tab2, tab3 = st.tabs(["🚀 Unit Converter", "⚖️ Material Density", "📋 Project Docs"])
+
+# --- TAB 1: UNIT CONVERTER ---
+with tab1:
+    st.subheader("Smart Unit Conversion")
+    col_input, col_arrow, col_output = st.columns([2, 1, 2])
     
-    col1, col2 = st.columns(2)
+    with col_input:
+        cat = st.selectbox("Select Parameter", ["Pressure (Bar → Pa)", "Power (HP → Watts)", "Force (N → Lbf)"])
+        val = st.number_input("Input Magnitude", value=1.0, step=0.1, key="conv_input")
     
-    with col1:
-        category = st.radio("Select Category", ["Pressure", "Power", "Force"])
-        value = st.number_input("Enter Value", value=1.0)
+    with col_arrow:
+        st.markdown("<h2 style='text-align: center; padding-top: 25px;'>➔</h2>", unsafe_with_html_view=True)
+        
+    with col_output:
+        if "Pressure" in cat:
+            res = val * 100000
+            st.metric("Resulting Pascal (Pa)", f"{res:,.0f} Pa")
+        elif "Power" in cat:
+            res = val * 745.7
+            st.metric("Resulting Watts (W)", f"{res:,.2f} W")
+        else:
+            res = val * 0.2248
+            st.metric("Resulting Pound-force (lbf)", f"{res:,.4f} lbf")
 
-    with col2:
-        if category == "Pressure":
-            # Bar to Pascal
-            result = value * 100000
-            st.metric("Pascal (Pa)", f"{result:,.2f}")
-            st.info("Conversion: 1 Bar = 100,000 Pa")
-            
-        elif category == "Power":
-            # HP to Watts
-            result = value * 745.7
-            st.metric("Watts (W)", f"{result:,.2f}")
-            st.info("Conversion: 1 HP = 745.7 W")
-            
-        elif category == "Force":
-            # Newton to Pound-force
-            result = value * 0.2248
-            st.metric("Pound-force (lbf)", f"{result:,.4f}")
-            st.info("Conversion: 1 N ≈ 0.2248 lbf")
-
-# --- TOOL 2: DENSITY CHECKER ---
-else:
-    st.header("Material Density Checker")
+# --- TAB 2: MATERIAL DENSITY & WEIGHT ---
+with tab2:
+    st.subheader("Material Intelligence")
     
-    # Standard engineering materials density in kg/m^3
-    densities = {
-        "Steel": 7850,
-        "Aluminum": 2700,
-        "Copper": 8960,
-        "Cast Iron": 7200,
-        "Titanium": 4500,
-        "Water": 1000
+    mat_db = {
+        "Steel (Mild)": 7850,
+        "Aluminum (6061)": 2700,
+        "Copper (Pure)": 8960,
+        "Titanium (Gr5)": 4500,
+        "Stainless Steel": 8000
     }
     
-    material = st.selectbox("Select Material", list(densities.keys()))
+    c1, c2 = st.columns(2)
+    with c1:
+        selected_mat = st.selectbox("Choose Material Profile", list(mat_db.keys()))
+        density = mat_db[selected_mat]
+        st.write(f"Standard Density: `{density} kg/m³`")
     
-    st.write(f"The density of **{material}** is approximately:")
-    st.success(f"{densities[material]} kg/m³")
+    with c2:
+        vol = st.slider("Define Volume (m³)", 0.0, 10.0, 1.0)
+        total_mass = vol * density
     
-    # Weight Calculator
-    st.subheader("Quick Weight Estimator")
-    volume = st.number_input("Enter Volume (m³)", min_value=0.0, value=1.0)
-    weight = volume * densities[material]
-    st.write(f"Estimated Mass: **{weight:,.2f} kg**")
+    # Large Display for Result
+    st.divider()
+    st.subheader("Estimated Mass Calculation")
+    st.success(f"The total mass for **{vol} m³** of **{selected_mat}** is **{total_mass:,.2f} Kilograms**")
+    
+    # Small visualization hack (just for show)
+    st.progress(min(vol/10, 1.0))
 
-# Footer
+# --- TAB 3: PROJECT INFO ---
+with tab3:
+    st.markdown("""
+    ### 📌 About This App
+    This application is designed to streamline day-to-day calculations for mechanical engineers. 
+    
+    **Features Included:**
+    - High-precision unit conversions.
+    - Standardized material density database.
+    - Real-time mass estimation based on volume.
+    
+    **Future Updates:**
+    - [ ] Thermal expansion coefficients.
+    - [ ] Stress-Strain curve generator.
+    - [ ] CAD file metadata viewer.
+    """)
+
+# --- FOOTER ---
 st.markdown("---")
-st.caption("Developed for Mechanical Engineering Department Portfolio.")
+st.markdown("<center>Built with ❤️ and Python for the 25-ME Batch</center>", unsafe_with_html_view=True)
