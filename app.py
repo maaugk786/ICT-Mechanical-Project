@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for a Premium Look
+# Custom CSS for a Premium Look (FIXED HERE)
 st.markdown("""
     <style>
     .main {
@@ -25,7 +25,7 @@ st.markdown("""
         box-shadow: none !important;
     }
     </style>
-    """, unsafe_with_html_view=True)
+    """, unsafe_allow_html=True)
 
 # --- SIDEBAR: Developer Branding ---
 with st.sidebar:
@@ -54,7 +54,8 @@ with tab1:
         val = st.number_input("Input Magnitude", value=1.0, step=0.1, key="conv_input")
     
     with col_arrow:
-        st.markdown("<h2 style='text-align: center; padding-top: 25px;'>➔</h2>", unsafe_with_html_view=True)
+        # (FIXED HERE)
+        st.markdown("<h2 style='text-align: center; padding-top: 25px;'>➔</h2>", unsafe_allow_html=True)
         
     with col_output:
         if "Pressure" in cat:
@@ -115,5 +116,6 @@ with tab3:
     """)
 
 # --- FOOTER ---
+# (FIXED HERE)
 st.markdown("---")
-st.markdown("<center>Built with ❤️ and Python for the 25-ME Batch</center>", unsafe_with_html_view=True)
+st.markdown("<center>Built with ❤️ and Python for the 25-ME Batch</center>", unsafe_allow_html=True)
