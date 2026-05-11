@@ -33,7 +33,7 @@ with st.sidebar:
     st.title("MECH-PRO v2.0")
     st.markdown("---")
     st.subheader("👨‍💻 Developer Profile")
-    st.info(f"**Name:** Muhammad Bilal\n\n**Roll:** 25-ME-124")
+    st.info(f"**Name:** Muhammad Abdullah Asad\n\n**Roll:** 25-ME-20")
     st.markdown("---")
     st.caption("UET Taxila | Mechanical Engineering")
 
@@ -118,4 +118,4 @@ with tab3:
 # --- FOOTER ---
 # (FIXED HERE)
 st.markdown("---")
-st.markdown("<center>Built with ❤️ and Python for the 25-ME Batch</center>", unsafe_allow_html=True)
+st.markdown("<center>Built with Python for the ICT Assignment</center>", unsafe_allow_html=True)
